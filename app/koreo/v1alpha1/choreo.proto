@@ -1,0 +1,117 @@
+syntax = "proto3";
+
+package app.koreo.v1alpha1;
+
+option go_package = "github.com/greatliontech/koreo/gen/go;koreopb";
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/duration.proto";
+
+// Generated according to https://cloud.google.com/apis/design/standard_methods
+service ChoreoService {
+  rpc ListChoreos(ListChoreosRequest) returns (ListChoreosResponse) {
+    option (google.api.http) = {
+      get: "/v1alpha1/Choreos"
+    };
+  }
+
+  rpc GetChoreo(GetChoreoRequest) returns (Choreo) {
+    option (google.api.http) = {
+      get: "/v1alpha1/{name=Choreos/*}"
+    };
+  }
+
+  rpc CreateChoreo(CreateChoreoRequest) returns (Choreo) {
+    option (google.api.http) = {
+      post: "/v1alpha1/Choreos"
+      body: "Choreo"
+    };
+  }
+
+  rpc UpdateChoreo(UpdateChoreoRequest) returns (Choreo) {
+    option (google.api.http) = {
+      patch: "/v1alpha1/{Choreo.name=Choreos/*}"
+      body: "Choreo"
+    };
+  }
+
+  rpc DeleteChoreo(DeleteChoreoRequest) returns (DeleteChoreoResponse) {
+    option (google.api.http) = {
+      delete: "/v1alpha1/{name=Choreos/*}"
+    };
+  }
+}
+
+message Choreo {
+  string id = 1;
+	string name = 2;
+  string audio = 3;
+}
+
+message ListChoreosRequest {
+  // The maximum number of items to return.
+  int32 page_size = 1;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 2;
+}
+
+message ListChoreosResponse {
+  // The field name should match the noun "Choreo" in the method name.
+  // There will be a maximum number of items returned based on the page_size field in the request.
+  repeated Choreo items = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more results in the list.
+  string next_page_token = 2;
+}
+
+message GetChoreoRequest {
+  // The field will contain name of the resource requested.
+  string id = 1;
+}
+
+message CreateChoreoRequest {
+  // The Choreo resource to create.
+  // The field name should match the Noun in the method name.
+  Choreo choreo = 1;
+}
+
+message UpdateChoreoRequest {
+  // The Choreo resource which replaces the resource on the server.
+  Choreo choreo = 1;
+
+  // The update mask applies to the resource. For the `FieldMask` definition,
+  // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteChoreoRequest {
+  // The resource name of the Choreo to be deleted.
+  string id = 1;
+}
+
+message DeleteChoreoResponse {
+  // The resource name of the Choreo to be deleted.
+  string id = 1;
+}
+
+message Grid {
+  uint64 width = 1;  
+  uint64 height = 2;  
+  uint64 item_size = 3;  
+}
+
+message Coordinates {
+  uint64 left = 1;  
+  uint64 top = 2;  
+  double rotation = 3;  
+}
+
+message Possition {
+  string status = 1;
+  Coordinates from = 2;
+  Coordinates to = 3;
+}
+

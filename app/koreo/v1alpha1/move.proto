@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package app.koreo.v1alpha1;
+
+option go_package = "github.com/greatliontech/koreo/gen/go;koreopb";
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/duration.proto";
+
+// Generated according to https://cloud.google.com/apis/design/standard_methods
+service MoveService {
+  rpc ListMoves(ListMovesRequest) returns (ListMovesResponse) {
+    option (google.api.http) = {
+      get: "/v1alpha1/Moves"
+    };
+  }
+
+  rpc GetMove(GetMoveRequest) returns (Move) {
+    option (google.api.http) = {
+      get: "/v1alpha1/{name=Moves/*}"
+    };
+  }
+
+  rpc CreateMove(CreateMoveRequest) returns (Move) {
+    option (google.api.http) = {
+      post: "/v1alpha1/Moves"
+      body: "Move"
+    };
+  }
+
+  rpc UpdateMove(UpdateMoveRequest) returns (Move) {
+    option (google.api.http) = {
+      patch: "/v1alpha1/{Move.name=Moves/*}"
+      body: "Move"
+    };
+  }
+
+  rpc DeleteMove(DeleteMoveRequest) returns (DeleteMoveResponse) {
+    option (google.api.http) = {
+      delete: "/v1alpha1/{name=Moves/*}"
+    };
+  }
+}
+
+message Move {
+  string id = 1;
+  string name = 2;
+  optional uint64 count = 3;
+}
+
+message ListMovesRequest {
+  // The maximum number of items to return.
+  int32 page_size = 1;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 2;
+}
+
+message ListMovesResponse {
+  // The field name should match the noun "Move" in the method name.
+  // There will be a maximum number of items returned based on the page_size field in the request.
+  repeated Move items = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more results in the list.
+  string next_page_token = 2;
+}
+
+message GetMoveRequest {
+  // The field will contain name of the resource requested.
+  string id = 1;
+}
+
+message CreateMoveRequest {
+  // The Move resource to create.
+  // The field name should match the Noun in the method name.
+  Move move = 1;
+}
+
+message UpdateMoveRequest {
+  // The Move resource which replaces the resource on the server.
+  Move move = 1;
+
+  // The update mask applies to the resource. For the `FieldMask` definition,
+  // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteMoveRequest {
+  // The resource name of the Move to be deleted.
+  string id = 1;
+}
+
+message DeleteMoveResponse {
+  // The resource name of the Move to be deleted.
+  string id = 1;
+}

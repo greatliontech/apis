@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package app.koreo.v1alpha1;
+
+option go_package = "github.com/greatliontech/koreo/gen/go;koreopb";
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/duration.proto";
+
+// Generated according to https://cloud.google.com/apis/design/standard_methods
+service ImageService {
+  rpc ListImages(ListImagesRequest) returns (ListImagesResponse) {
+    option (google.api.http) = {
+      get: "/v1alpha1/Images"
+    };
+  }
+
+  rpc GetImage(GetImageRequest) returns (Image) {
+    option (google.api.http) = {
+      get: "/v1alpha1/{name=Images/*}"
+    };
+  }
+
+  rpc CreateImage(CreateImageRequest) returns (Image) {
+    option (google.api.http) = {
+      post: "/v1alpha1/Images"
+      body: "Image"
+    };
+  }
+
+  rpc UpdateImage(UpdateImageRequest) returns (Image) {
+    option (google.api.http) = {
+      patch: "/v1alpha1/{Image.name=Images/*}"
+      body: "Image"
+    };
+  }
+
+  rpc DeleteImage(DeleteImageRequest) returns (DeleteImageResponse) {
+    option (google.api.http) = {
+      delete: "/v1alpha1/{name=Images/*}"
+    };
+  }
+}
+
+message Image {
+  string id = 1;
+  string name = 2;
+  string uri = 3;
+}
+
+message ListImagesRequest {
+  // The maximum number of items to return.
+  int32 page_size = 1;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 2;
+}
+
+message ListImagesResponse {
+  // The field name should match the noun "Image" in the method name.
+  // There will be a maximum number of items returned based on the page_size field in the request.
+  repeated Image items = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more results in the list.
+  string next_page_token = 2;
+}
+
+message GetImageRequest {
+  // The field will contain name of the resource requested.
+  string id = 1;
+}
+
+message CreateImageRequest {
+  // The Image resource to create.
+  // The field name should match the Noun in the method name.
+  Image image = 1;
+}
+
+message UpdateImageRequest {
+  // The Image resource which replaces the resource on the server.
+  Image image = 1;
+
+  // The update mask applies to the resource. For the `FieldMask` definition,
+  // see https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteImageRequest {
+  // The resource name of the Image to be deleted.
+  string id = 1;
+}
+
+message DeleteImageResponse {
+  // The resource name of the Image to be deleted.
+  string id = 1;
+}

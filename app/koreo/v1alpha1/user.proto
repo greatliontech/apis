@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package app.koreo.v1alpha1;
+
+option go_package = "github.com/greatliontech/koreo/gen/go;koreopb";
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/field_mask.proto";
+
+// Generated according to https://cloud.google.com/apis/design/standard_methods
+service UserService {
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {
+    option (google.api.http) = {
+      get : "/v1alpha1/Users"
+    };
+  }
+
+  rpc GetUser(GetUserRequest) returns (User) {
+    option (google.api.http) = {
+      get : "/v1alpha1/{name=Users/*}"
+    };
+  }
+
+  rpc CreateUser(CreateUserRequest) returns (User) {
+    option (google.api.http) = {
+      post : "/v1alpha1/Users"
+      body : "User"
+    };
+  }
+
+  rpc UpdateUser(UpdateUserRequest) returns (User) {
+    option (google.api.http) = {
+      patch : "/v1alpha1/{User.name=Users/*}"
+      body : "User"
+    };
+  }
+
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {
+    option (google.api.http) = {
+      delete : "/v1alpha1/{name=Users/*}"
+    };
+  }
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string display_name = 3;
+  optional string profile_pic = 4;
+  optional string ig_handler = 5;
+  repeated string groups = 6;
+  string name = 7;
+}
+
+message ListUsersRequest {
+  // The maximum number of items to return.
+  int32 page_size = 1;
+
+  // The next_page_token value returned from a previous List request, if any.
+  string page_token = 2;
+}
+
+message ListUsersResponse {
+  // The field name should match the noun "User" in the method name.
+  // There will be a maximum number of items returned based on the page_size
+  // field in the request.
+  repeated User items = 1;
+
+  // Token to retrieve the next page of results, or empty if there are no more
+  // results in the list.
+  string next_page_token = 2;
+}
+
+message GetUserRequest {
+  // The field will contain name of the resource requested.
+  string id = 1;
+}
+
+message CreateUserRequest {
+  // The User resource to create.
+  // The field name should match the Noun in the method name.
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  // The User resource which replaces the resource on the server.
+  User user = 1;
+
+  // The update mask applies to the resource. For the `FieldMask` definition,
+  // see
+  // https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message DeleteUserRequest {
+  // The resource name of the User to be deleted.
+  string id = 1;
+}
+
+message DeleteUserResponse {
+  // The resource name of the User to be deleted.
+  string id = 1;
+}
